@@ -9,6 +9,8 @@
     content="Award-winning luxury wedding & portrait photographer. Where every frame is a cinematic still.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@200;300;400;500&display=swap"
     rel="stylesheet">
@@ -57,7 +59,9 @@
       font-family: var(--sans);
       font-weight: 300;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+      text-rendering: optimizeSpeed
     }
 
     a {
@@ -89,6 +93,9 @@
       mix-blend-mode: overlay;
       background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
       animation: grain 8s steps(10) infinite;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     @keyframes grain {
@@ -146,8 +153,10 @@
       pointer-events: none;
       z-index: 99999;
       border-radius: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate3d(-50%, -50%, 0);
       will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     .c-dot {
@@ -326,7 +335,9 @@
       inset: 0;
       opacity: 0;
       transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
-      will-change: opacity
+      will-change: opacity;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     .hero-slide.active {
@@ -338,13 +349,15 @@
       height: 100%;
       object-fit: cover;
       filter: brightness(.48) contrast(1.06) saturate(.9);
-      transform: scale(1.08);
+      transform: scale3d(1.08, 1.08, 1);
       transition: transform 8s linear;
-      will-change: transform
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     .hero-slide.active img {
-      transform: scale(1.0)
+      transform: scale3d(1, 1, 1)
     }
 
     /* Film burn overlay */
@@ -642,11 +655,13 @@
       filter: brightness(.85) contrast(1.05) saturate(.9);
       transition: transform .7s cubic-bezier(0.4, 0, 0.2, 1);
       will-change: transform;
-      transform: translateZ(0)
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     .s-img-panel:hover img {
-      transform: scale(1.04)
+      transform: scale3d(1.04, 1.04, 1)
     }
 
     .s-img-overlay {
@@ -784,13 +799,15 @@
       margin: 0 auto;
       overflow: hidden;
       aspect-ratio: 16/10;
-      user-select: none
+      user-select: none;
+      transform: translateZ(0)
     }
 
     .ba-after,
     .ba-before {
       position: absolute;
-      inset: 0
+      inset: 0;
+      will-change: clip-path
     }
 
     .ba-after img,
@@ -944,7 +961,9 @@
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      background: var(--surface)
+      background: var(--surface);
+      contain: layout style;
+      transform: translateZ(0)
     }
 
     .g-item img {
@@ -952,11 +971,14 @@
       height: auto;
       display: block;
       transition: transform .8s var(--ease-out), filter .5s;
-      filter: brightness(.88) saturate(.85) contrast(1.04)
+      filter: brightness(.88) saturate(.85) contrast(1.04);
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     .g-item:hover img {
-      transform: scale(1.07);
+      transform: scale3d(1.07, 1.07, 1);
       filter: brightness(.98) saturate(1) contrast(1.05)
     }
 
@@ -1095,12 +1117,15 @@
       max-height: 88vh;
       object-fit: contain;
       box-shadow: 0 40px 120px rgba(0, 0, 0, .9);
-      transform: scale(.96);
-      transition: transform .5s var(--ease-out)
+      transform: scale3d(.96, .96, 1);
+      transition: transform .5s var(--ease-out);
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     #lb.on #lb-img {
-      transform: scale(1)
+      transform: scale3d(1, 1, 1)
     }
 
     .lb-nav {
@@ -1647,11 +1672,14 @@
       height: 100%;
       object-fit: cover;
       filter: brightness(.82) contrast(1.05) saturate(.85);
-      transition: transform .9s var(--ease-out), filter .5s
+      transition: transform .9s var(--ease-out), filter .5s;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden
     }
 
     .swiper-slide:hover img {
-      transform: scale(1.05);
+      transform: scale3d(1.05, 1.05, 1);
       filter: brightness(.95) saturate(1)
     }
 
@@ -1865,6 +1893,114 @@
     }
 
     /* ═══════════════════════════════════════════════════════
+   MOBILE — COMPREHENSIVE RESPONSIVE
+═══════════════════════════════════════════════════════ */
+
+    /* Restore cursor for touch devices */
+    @media (pointer: coarse) {
+      *, *::before, *::after { cursor: auto }
+      .c-dot, .c-ring { display: none }
+    }
+
+    /* Hero mobile */
+    @media (max-width: 768px) {
+      .hero-text { bottom: 7rem; left: 5%; right: 5%; max-width: 100% }
+      .hero-h1 { font-size: clamp(2.8rem, 11vw, 5rem) }
+      .hero-tagline { font-size: .82rem; max-width: 100% }
+      .hero-actions { flex-direction: column; gap: .8rem }
+      .hero-actions a { text-align: center; width: 100% }
+      .hero-dots { bottom: 4.5rem }
+      .hero-scroll { display: none }
+    }
+
+    /* Stats mobile */
+    @media (max-width: 480px) {
+      .stats-bar { grid-template-columns: repeat(2,1fr); padding: 2rem 5%; gap: 1.2rem }
+      .stat-item:nth-child(2) { border-right: none }
+      .stat-item:nth-child(3) { border-right: 1px solid var(--border) }
+    }
+
+    /* Story section mobile */
+    @media (max-width: 600px) {
+      .s-img { min-height: 45vh }
+      .s-img-panel { min-height: 22vh }
+      .s-text { padding: 3rem 6% }
+      .s-text h2 { font-size: clamp(1.8rem, 6vw, 2.8rem) }
+    }
+
+    /* Before/after mobile */
+    @media (max-width: 600px) {
+      .ba-section { padding: 5rem 5% }
+      .ba-wrap { aspect-ratio: 4/3 }
+      .ba-handle::before { width: 32px; height: 32px }
+      .ba-header { text-align: left }
+    }
+
+    /* Gallery mobile */
+    @media (max-width: 480px) {
+      .gallery-head { flex-direction: column; align-items: flex-start; padding: 4rem 5% 0; gap: 1rem }
+      .gallery-head p { text-align: left; max-width: 100% }
+      .g-filters { gap: .4rem; padding: 1.5rem 5% }
+      .f-btn { padding: .45rem 1rem; font-size: .6rem }
+    }
+
+    /* Lightbox mobile */
+    @media (max-width: 768px) {
+      .lb-inner { flex-direction: column; align-items: center; gap: .5rem; max-width: 100vw; padding: 0 .5rem; position: relative }
+      #lb-img { max-width: 96vw; max-height: 70vh }
+      #lbPrev { position: absolute; left: .5rem; top: calc(50% - 24px); z-index: 10 }
+      #lbNext { position: absolute; right: .5rem; top: calc(50% - 24px); z-index: 10 }
+      .lb-close { top: -2.5rem }
+      .lb-meta { bottom: -3rem; flex-direction: column; gap: .2rem }
+    }
+
+    /* Testimonials mobile */
+    @media (max-width: 480px) {
+      .testimonials { padding: 5rem 5% }
+      .testi-header { margin-bottom: 3rem; text-align: left }
+    }
+
+    /* About mobile */
+    @media (max-width: 600px) {
+      .about-img-col { min-height: 55vh }
+      .about-text-col { padding: 3rem 6% }
+      .about-award { left: 1.5rem; bottom: 1.5rem; padding: 1rem 1.2rem }
+    }
+
+    /* Booking mobile */
+    @media (max-width: 600px) {
+      .booking-section { padding: 5rem 5% }
+      .submit-row { grid-template-columns: 1fr }
+      .btn-wa-form { width: 100%; text-align: center; padding: 1rem }
+    }
+
+    /* Reel swiper mobile */
+    @media (max-width: 480px) {
+      .reel-section { padding: 4rem 0 }
+      .reel-label { padding: 0 5% 2rem; flex-direction: column; gap: .6rem }
+      .reel-label p { text-align: left; max-width: 100% }
+    }
+
+    /* Footer mobile */
+    @media (max-width: 480px) {
+      footer { padding: 3rem 5% 2rem }
+      .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; margin-bottom: 2.5rem }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 1rem }
+      .footer-awards { flex-wrap: wrap; justify-content: center }
+    }
+
+    /* Section titles mobile */
+    @media (max-width: 480px) {
+      .section-title { font-size: clamp(1.8rem, 7vw, 3rem) }
+      .lw { font-size: clamp(2rem, 9vw, 3.5rem) }
+    }
+
+    /* WA float — move up on mobile so it doesn't overlap content */
+    @media (max-width: 480px) {
+      .wa-float { bottom: 1.5rem; right: 1.5rem; width: 46px; height: 46px }
+    }
+
+    /* ═══════════════════════════════════════════════════════
    MOBILE NAV OVERLAY
 ═══════════════════════════════════════════════════════ */
     #mobileNav {
@@ -1924,7 +2060,7 @@
 
   <!-- WhatsApp float -->
   <a class="wa-float" id="waFloat"
-    href="https://wa.me/91XXXXXXXXXX?text=Hi%20Prasad%2C%20I'd%20like%20to%20enquire%20about%20a%20shoot"
+    href="https://wa.me/917013671046?text=Hi%20Prasad%2C%20I'd%20like%20to%20enquire%20about%20a%20shoot"
     target="_blank" rel="noopener">
     <span class="wa-tooltip">Chat on WhatsApp</span>
     💬
@@ -1980,13 +2116,13 @@
   <!-- ═══ HERO ═══════════════════════════════════════════ -->
   <section id="hero">
     <div class="hero-slide active" id="s0">
-      <img src="images/portrait/portrait-2.jpg" loading="eager" alt="Portrait">
+      <img src="images/portrait/portrait-2.jpg" loading="eager" fetchpriority="high" decoding="sync" alt="Portrait">
     </div>
     <div class="hero-slide" id="s1">
-      <img src="images/engagement/engagement-4.jpg" loading="eager" alt="Engagement">
+      <img src="images/engagement/engagement-4.jpg" loading="eager" decoding="async" alt="Engagement">
     </div>
     <div class="hero-slide" id="s2">
-      <img src="images/haldi/haldi-1.jpg" loading="eager" alt="Haldi">
+      <img src="images/haldi/haldi-1.jpg" loading="eager" decoding="async" alt="Haldi">
     </div>
     <div class="burn" id="burnOverlay"></div>
     <div class="hero-grad"></div>
@@ -2238,20 +2374,19 @@
 
         <div class="contact-methods">
           <a class="contact-item wa-item"
-            href="https://wa.me/91XXXXXXXXXX?text=Hi%20Prasad%2C%20I'd%20like%20to%20enquire%20about%20a%20shoot"
+            href="https://wa.me/917013671046?text=Hi%20Prasad%2C%20I'd%20like%20to%20enquire%20about%20a%20shoot"
             target="_blank" rel="noopener">
             <span class="contact-icon">💬</span>
             <div>
               <div class="contact-label">WhatsApp — Fastest Response</div>
-              <div class="contact-value">+91 XXXXX XXXXX</div>
+              <div class="contact-value">+91 70136 71046</div>
             </div>
           </a>
-          <a class="contact-item" href="/cdn-cgi/l/email-protection#addddfccdeccc9eddfc8d9dfc2ceccddd9d8dfc8de83cec2c0">
+          <a class="contact-item" href="mailto:retrocaptures@gmail.com">
             <span class="contact-icon" style="font-size:1rem">✉</span>
             <div>
               <div class="contact-label">Email</div>
-              <div class="contact-value"><span class="__cf_email__"
-                  data-cfemail="d9a9abb8aab8bd99abbcadabb6bab8a9adacabbcaaf7bab6b4">[email&#160;protected]</span></div>
+              <div class="contact-value">retrocaptures@gmail.com</div>
             </div>
           </a>
           <div class="contact-item">
@@ -2300,7 +2435,7 @@
           </div>
           <div class="submit-row ru">
             <button type="submit" class="btn-submit" id="submitBtn"><span>Send Inquiry</span></button>
-            <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Prasad%2C%20I'd%20like%20to%20book%20a%20session"
+            <a href="https://wa.me/917013671046?text=Hi%20Prasad%2C%20I'd%20like%20to%20book%20a%20session"
               target="_blank" class="btn-wa-form" title="Chat on WhatsApp">💬</a>
           </div>
         </form>
@@ -2332,10 +2467,8 @@
       <div class="footer-col">
         <h4>Connect</h4>
         <a href="https://www.instagram.com/retrocaptures.in/" target="_blank" rel="noopener">Instagram &nearr;</a>
-        <a href="https://wa.me/91XXXXXXXXXX" target="_blank">WhatsApp &nearr;</a>
-        <a href="/cdn-cgi/l/email-protection#5525273426343115273021273a36342521202730267b363a38"><span
-            class="__cf_email__"
-            data-cfemail="1161637062707551637465637e72706165646374623f727e7c">[email&#160;protected]</span></a>
+        <a href="https://wa.me/917013671046" target="_blank">WhatsApp &nearr;</a>
+        <a href="mailto:retrocaptures@gmail.com">retrocaptures@gmail.com</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -2349,7 +2482,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
@@ -2375,13 +2508,13 @@
     if (hasFinePointer) {
       const dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
       let mx = 0, my = 0, rx = 0, ry = 0;
-      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY });
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY }, { passive: true });
       document.addEventListener('mousedown', () => ring.classList.add('click'));
       document.addEventListener('mouseup', () => ring.classList.remove('click'));
       (function raf() {
         rx += (mx - rx) * .18; ry += (my - ry) * .18;
-        dot.style.transform = `translate(${mx - 2.5}px,${my - 2.5}px)`;
-        ring.style.transform = `translate(${rx - 17}px,${ry - 17}px)`;
+        dot.style.transform = `translate3d(${mx - 2.5}px,${my - 2.5}px,0)`;
+        ring.style.transform = `translate3d(${rx - 17}px,${ry - 17}px,0)`;
         requestAnimationFrame(raf);
       })();
       document.querySelectorAll('a,button,.g-item,.f-btn,.g-more-btn,.contact-item,.testi-card,.ba-handle').forEach(el => {
@@ -2399,7 +2532,7 @@
       const s = window.scrollY;
       nav.classList.toggle('solid', s > 80);
       s > 400 ? waFloat.classList.add('show') : waFloat.classList.remove('show');
-    });
+    }, { passive: true });
     document.getElementById('navMenu').addEventListener('click', () => document.getElementById('mobileNav').classList.add('open'));
     document.getElementById('mnClose').addEventListener('click', () => document.getElementById('mobileNav').classList.remove('open'));
     document.querySelectorAll('#mobileNav a').forEach(a => a.addEventListener('click', () => document.getElementById('mobileNav').classList.remove('open')));
@@ -2488,21 +2621,26 @@
       const handle = document.getElementById('baHandle');
       let dragging = false;
       let pct = 50;
+      let rafPending = false;
+
+      function applyPct() {
+        after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+        handle.style.left = pct + '%';
+        rafPending = false;
+      }
 
       function set(x) {
         const rect = wrap.getBoundingClientRect();
         pct = Math.max(2, Math.min(98, ((x - rect.left) / rect.width) * 100));
-        after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
-        handle.style.left = pct + '%';
+        if (!rafPending) { rafPending = true; requestAnimationFrame(applyPct); }
       }
 
       handle.addEventListener('mousedown', e => { dragging = true; e.preventDefault() });
       handle.addEventListener('touchstart', e => { dragging = true }, { passive: true });
-      window.addEventListener('mousemove', e => { if (dragging) set(e.clientX) });
+      window.addEventListener('mousemove', e => { if (dragging) set(e.clientX) }, { passive: true });
       window.addEventListener('touchmove', e => { if (dragging) set(e.touches[0].clientX) }, { passive: true });
       window.addEventListener('mouseup', () => dragging = false);
       window.addEventListener('touchend', () => dragging = false);
-      // Init at 50%
       set(wrap.getBoundingClientRect().left + wrap.getBoundingClientRect().width * .5);
     })();
 
@@ -2535,6 +2673,7 @@
 
     function renderBatch() {
       const batch = filtered.slice(shown, shown + BATCH);
+      const frag = document.createDocumentFragment();
       batch.forEach((p, i) => {
         const globalIdx = shown + i;
         const el = document.createElement('div');
@@ -2543,8 +2682,8 @@
         const img = document.createElement('img');
         img.alt = p.t;
         img.loading = 'lazy';
+        img.decoding = 'async';
         img.src = p.jpg;
-        // If jpg fails, try png; if png also fails, hide the grid item
         img.onerror = function() {
           if (img.src.endsWith('.jpg') || img.src.indexOf('.jpg') > -1) {
             img.onerror = function() { el.style.display = 'none'; };
@@ -2559,10 +2698,11 @@
         el.appendChild(img);
         el.appendChild(overlay);
         el.addEventListener('click', () => openLb(globalIdx));
-        gGrid.appendChild(el);
+        frag.appendChild(el);
         setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'none'; }, (i % 8) * 55 + 80);
         if (hasFinePointer) { const ring = document.getElementById('cRing'); el.addEventListener('mouseenter', () => ring.classList.add('grow')); el.addEventListener('mouseleave', () => ring.classList.remove('grow')) }
       });
+      gGrid.appendChild(frag);
       shown += batch.length;
       gMore.style.display = shown >= filtered.length ? 'none' : '';
     }
@@ -2589,7 +2729,13 @@
 
     function openLb(idx) {
       lbIdx = idx; const p = filtered[idx];
-      lbImg.src = p.u + '&w=2000&auto=format&fit=crop';
+      lbImg.onerror = null;
+      // Try jpg first, fall back to png
+      lbImg.src = p.jpg;
+      lbImg.onerror = function() {
+        lbImg.onerror = null;
+        lbImg.src = p.png;
+      };
       document.getElementById('lbTitle').textContent = p.t;
       document.getElementById('lbCat').textContent = p.c.charAt(0).toUpperCase() + p.c.slice(1);
       document.getElementById('lbCount').textContent = `${idx + 1} / ${filtered.length}`;
@@ -2624,8 +2770,32 @@
     document.getElementById('bookForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
+
+      // Collect form values
+      const name    = document.getElementById('fn').value.trim();
+      const email   = document.getElementById('em').value.trim();
+      const phone   = document.getElementById('ph').value.trim();
+      const session = document.getElementById('ev').value;
+      const date    = document.getElementById('dt').value.trim();
+      const msg     = document.getElementById('msg').value.trim();
+
+      // Build WhatsApp message
+      const lines = [
+        '📸 *New Booking Inquiry — Retro Captures*',
+        '',
+        `👤 *Name:* ${name}`,
+        `📧 *Email:* ${email}`,
+        phone   ? `📱 *Phone:* ${phone}`   : null,
+        session ? `🎯 *Session:* ${session}` : null,
+        date    ? `📅 *Date/Location:* ${date}` : null,
+        msg     ? `💬 *Message:* ${msg}`    : null,
+      ].filter(Boolean).join('\n');
+
+      const waURL = `https://wa.me/917013671046?text=${encodeURIComponent(lines)}`;
+
       btn.querySelector('span').textContent = 'Sending…';
       setTimeout(() => {
+        window.open(waURL, '_blank', 'noopener');
         btn.querySelector('span').textContent = 'Sent ✓';
         btn.style.background = 'var(--gold)';
         btn.style.color = 'var(--bg)';
@@ -2635,7 +2805,7 @@
           btn.style.background = '';
           btn.style.color = '';
         }, 3000);
-      }, 1200);
+      }, 600);
     });
 
   </script>
